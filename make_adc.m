@@ -16,7 +16,7 @@ end
 M = 2^N;
 R = 1 + p.sigma_R*randn(M,1);                   % ladder resistors
 
-adc.T = Vref * cumsum(R(1:end -1)) / sun(R);       % thresholds T(1)...T(M-1), ideal = k*LSB
+adc.T = Vref * cumsum(R(1:end -1)) / sum(R);       % thresholds T(1)...T(M-1), ideal = k*LSB
 adc.N = N;
 adc.Vref = Vref;
 adc.LSB = Vref / M;
