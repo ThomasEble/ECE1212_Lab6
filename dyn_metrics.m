@@ -16,12 +16,16 @@ end
 hb = unique(hb(hb ~= Jin & hb ~= 0));
 Ph = sum(P(hb+1));
 
+noiseBins = true(size(P));
+noiseBins([1, Jin + 1]) = false;
+noiseBins(hb + 1) = false;
+
 Ptot   = sum(P);
 spur   = P;  spur(Jin+1) = 0;
-m.SNR    = ...
-m.SINAD  = ...
-m.THD    = ...
-m.SFDR   = ...
-m.ENOB   = ...
-m.harm_bins = ...
+m.SNR   = 10 * log10(Ps / sum(P(noiseBins)));
+m.SINAD = 10 * log10(Ps / (Ptot - Ps));
+m.THD    = 10 * log10(Ph / Ps);
+m.SFDR   = 10 * log10(Ps / max(spur));
+m.ENOB   = (m.SINAD - 1.76) / 6.02;
+m.harm_bins = hb;
 end
