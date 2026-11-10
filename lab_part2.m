@@ -15,7 +15,7 @@ code = ideal_adc(vin, N, Vref);
 vq   = (code + 0.5)*LSB;                          % reconstruction level = bin center
 
 figure;
-subplot(2,1,1); plot(vin, code); 
+subplot(3,1,1); plot(vin, code); 
 grid on; 
 ylabel('Output code'); 
 title('Ideal 10-bit ADC');
