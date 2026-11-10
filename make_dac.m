@@ -11,10 +11,10 @@ for i = 1:numel(f), if ~isfield(p,f{i}), p.(f{i}) = def.(f{i}); end, end
 k = 0:N-1;                                   % bit index, 0 = LSB
 % Bit k is built from 2^k unit elements -> its relative error is sigma_u/sqrt(2^k)
 eps_k   = p.sigma_u * randn(1,N) ./ sqrt(2.^k);
-dac.N   = ...  
-dac.Vref = ...  
-dac.LSB = ...
-dac.w   = ...     % actual bit weights (V), LSB first
-dac.gain   = ...
-dac.offset = ...
+dac.N   = N;
+dac.Vref = Vref;
+dac.LSB = Vref/(2^N);
+dac.w   = dac.LSB * 2.^k .* (1 + eps_k);    % actual bit weights (V), LSB first
+dac.gain   = 1 + p.gain_err;
+dac.offset = p.offset_lsb * dac.LSB;
 end
