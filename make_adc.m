@@ -8,17 +8,21 @@ function adc = make_adc(N, Vref, p)
 if nargin < 3, p = struct(); end
 def = struct('sigma_R',0,'gain_err',0,'offset_lsb',0,'noise_lsb',0,'k2',0,'k3',0);
 f = fieldnames(def);
-for i = 1:numel(f), if ~isfield(p,f{i}), p.(f{i}) = def.(f{i}); end, end
+
+for i = 1:numel(f)
+    if ~isfield(p,f{i}), p.(f{i}) = def.(f{i}); end
+end
 
 M = 2^N;
 R = 1 + p.sigma_R*randn(M,1);                   % ladder resistors
-adc.T = ...       % thresholds T(1)...T(M-1), ideal = k*LSB
-adc.N = ...  
-adc.Vref = ... 
-adc.LSB = ...
-adc.gain = ...
-adc.offset = ...
-adc.noise  = ...
-adc.k2 = ...  
-adc.k3 = ...
+
+adc.T = Vref * cumsum(R(1:end -1)) / sun(R);       % thresholds T(1)...T(M-1), ideal = k*LSB
+adc.N = N;
+adc.Vref = Vref;
+adc.LSB = Vref / M;
+adc.gain = 1 + p.gain_err;
+adc.offset = p.offset_lsb * adc.LSB;
+adc.noise  = p.noise_lsb * adc.LSB;
+adc.k2 = p.k2;
+adc.k3 = p.k3;
 end
