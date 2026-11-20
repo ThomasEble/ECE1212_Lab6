@@ -22,5 +22,11 @@ mA = dyn_metrics(v, Jin, A, Vref);
 
 fprintf('Ideal:       SNR=%.1f SINAD=%.1f SFDR=%.1f dBc ENOB=%.2f\n', mA.SNR, mA.SINAD, mA.SFDR, mA.ENOB);
 
+% (b) 1% offset case
+dac = make_dac(N, Vref, struct('sigma_u', 0.01));
+v2  = run_dac(dac, code);
+mB  = dyn_metrics(v2, Jin, A, Vref);
+fprintf('Mismatch 1%%: SNR=%.1f SINAD=%.1f SFDR=%.1f dBc ENOB=%.2f\n', mB.SNR, mB.SINAD, mB.SFDR, mB.ENOB);
+
 
 
